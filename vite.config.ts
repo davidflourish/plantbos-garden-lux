@@ -15,5 +15,14 @@ export default defineConfig({
   // Nitro configuration for Vercel
   nitro: {
     preset: "vercel",
+    prerender: {
+      crawlLinks: false,
+    },
+  },
+
+  // Build optimization
+  build: {
+    outDir: "dist",
+    emptyOutDir: true,
   },
 });
