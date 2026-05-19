@@ -1,1 +1,1 @@
-"# plantbos-garden-lux" 
+"# plantbos-garden-lux"
