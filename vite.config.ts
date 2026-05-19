@@ -1,20 +1,14 @@
-import { defineConfig } from "@lovable.dev/vite-tanstack-config";
-
-const isVercel = process.env.VERCEL === "1";
+import { defineConfig } from 'vite'
+import { tanstackStart } from '@tanstack/react-start/plugin/vite' // or solid equivalent
+import viteReact from '@vitejs/plugin-react'
+import { nitro } from 'nitro/vite'
 
 export default defineConfig({
-  cloudflare: isVercel ? false : undefined,
-  tanstackStart: {
-    server: { entry: "server" },
-
-    ...(isVercel
-      ? {
-          spa: { enabled: true },
-          prerender: {
-            enabled: true,
-            crawlLinks: true,
-          },
-        }
-      : {}),
-  },
-});
+  plugins: [
+    tanstackStart(),
+    nitro({
+      preset: 'vercel'   // ← This is key
+    }),
+    viteReact(),
+  ],
+})
