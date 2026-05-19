@@ -14,7 +14,6 @@ export default defineConfig({
 
   // Nitro configuration for Vercel
   nitro: {
-    preset: "node-server",
-    outDir: ".output",
+    preset: "vercel",
   },
 });
