@@ -30,7 +30,6 @@ import g2 from "@/assets/gallery-2.jpg";
 import g3 from "@/assets/gallery-3.jpg";
 import g4 from "@/assets/gallery-4.jpg";
 
-const SITE_URL = "https://plantbos-garden-luxury.lovable.app";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -55,17 +54,17 @@ export const Route = createFileRoute("/")({
           "Rare & exotic plants, luxury landscaping and premium planters. Abuja's most-loved garden center.",
       },
       { property: "og:type", content: "website" },
-      { property: "og:url", content: SITE_URL },
-      { property: "og:image", content: `${SITE_URL}${hero}` },
+      { property: "og:url", },
+      { property: "og:image", content: `${hero}` },
       { name: "twitter:title", content: "Plantbos Gardens & Landscape" },
       {
         name: "twitter:description",
         content: "Bring nature home. Rare plants & luxury landscaping in Abuja.",
       },
-      { name: "twitter:image", content: `${SITE_URL}${hero}` },
+      { name: "twitter:image", content: `${hero}` },
     ],
     links: [
-      { rel: "canonical", href: SITE_URL },
+      { rel: "canonical", href: "/" },
       { rel: "preload", as: "image", href: hero, fetchpriority: "high" } as any,
     ],
     scripts: [
@@ -74,10 +73,10 @@ export const Route = createFileRoute("/")({
         children: JSON.stringify({
           "@context": "https://schema.org",
           "@type": "LocalBusiness",
-          "@id": SITE_URL,
+          "@id": "#local-business",
           name: "Plantbos Gardens & Landscape",
-          image: `${SITE_URL}${hero}`,
-          url: SITE_URL,
+          image: `${hero}`,
+          url: "/",
           telephone: "+2349035912539",
           priceRange: "₦₦₦",
           address: {
