@@ -54,7 +54,7 @@ export const Route = createFileRoute("/")({
           "Rare & exotic plants, luxury landscaping and premium planters. Abuja's most-loved garden center.",
       },
       { property: "og:type", content: "website" },
-      { property: "og:url", },
+      { property: "og:url", content: "/" },
       { property: "og:image", content: `${hero}` },
       { name: "twitter:title", content: "Plantbos Gardens & Landscape" },
       {
@@ -164,9 +164,8 @@ function Nav() {
   }, []);
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
-        scrolled ? "bg-background/85 backdrop-blur-xl border-b border-white/10 py-3" : "bg-transparent py-6"
-      }`}
+      className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${scrolled ? "bg-background/85 backdrop-blur-xl border-b border-white/10 py-3" : "bg-transparent py-6"
+        }`}
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6">
         <a href="#top" className="flex items-center gap-2" aria-label="Plantbos home">
