@@ -21,6 +21,8 @@ import {
   Sun,
   Scissors,
   Check,
+  Menu,
+  X,
 } from "lucide-react";
 import hero from "@/assets/hero.jpg";
 import logoWhite from "@/assets/logo-white.png";
@@ -30,6 +32,7 @@ import g2 from "@/assets/gallery-2.jpg";
 import g3 from "@/assets/gallery-3.jpg";
 import g4 from "@/assets/gallery-4.jpg";
 
+const SITE_URL = "https://plantbosgarden.vercel.app/";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -54,17 +57,17 @@ export const Route = createFileRoute("/")({
           "Rare & exotic plants, luxury landscaping and premium planters. Abuja's most-loved garden center.",
       },
       { property: "og:type", content: "website" },
-      { property: "og:url", content: "/" },
-      { property: "og:image", content: hero },
+      { property: "og:url", content: SITE_URL },
+      { property: "og:image", content: `${SITE_URL}${hero}` },
       { name: "twitter:title", content: "Plantbos Gardens & Landscape" },
       {
         name: "twitter:description",
         content: "Bring nature home. Rare plants & luxury landscaping in Abuja.",
       },
-      { name: "twitter:image", content: hero },
+      { name: "twitter:image", content: `${SITE_URL}${hero}` },
     ],
     links: [
-      { rel: "canonical", href: "/" },
+      { rel: "canonical", href: SITE_URL },
       { rel: "preload", as: "image", href: hero, fetchpriority: "high" } as any,
     ],
     scripts: [
@@ -73,10 +76,10 @@ export const Route = createFileRoute("/")({
         children: JSON.stringify({
           "@context": "https://schema.org",
           "@type": "LocalBusiness",
-          "@id": "#local-business",
+          "@id": SITE_URL,
           name: "Plantbos Gardens & Landscape",
-          image: hero,
-          url: "/",
+          image: `${SITE_URL}${hero}`,
+          url: SITE_URL,
           telephone: "+2349035912539",
           priceRange: "₦₦₦",
           address: {
@@ -154,29 +157,61 @@ const careTips = [
   },
 ];
 
+const navLinks = [
+  { label: "Shop", href: "#shop" },
+  { label: "Services", href: "#services" },
+  { label: "Plant Care", href: "#care" },
+  { label: "Visit", href: "#visit" },
+  { label: "Contact", href: "#contact" },
+];
+
 function Nav() {
   const [scrolled, setScrolled] = useState(false);
+  const [open, setOpen] = useState(false);
+
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
     onScroll();
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open]);
+
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open]);
+
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${scrolled ? "bg-background/85 backdrop-blur-xl border-b border-white/10 py-3" : "bg-transparent py-6"
-        }`}
+      className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
+        scrolled || open ? "bg-background/90 backdrop-blur-xl border-b border-white/10 py-3" : "bg-transparent py-6"
+      }`}
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6">
         <a href="#top" className="flex items-center gap-2" aria-label="Plantbos home">
           <img src={logoWhite} alt="Plantbos Gardens & Landscape logo" className="h-10 w-auto opacity-95" width={400} height={400} />
         </a>
         <nav aria-label="Primary" className="hidden items-center gap-10 text-sm tracking-wide text-foreground/90 md:flex">
-          <a href="#shop" className="hover:text-sage transition">Shop</a>
-          <a href="#services" className="hover:text-sage transition">Services</a>
-          <a href="#care" className="hover:text-sage transition">Plant Care</a>
-          <a href="#visit" className="hover:text-sage transition">Visit</a>
-          <a href="#contact" className="hover:text-sage transition">Contact</a>
+          {navLinks.map((link) => (
+            <a key={link.href} href={link.href} className="hover:text-sage transition">
+              {link.label}
+            </a>
+          ))}
         </nav>
         <div className="flex items-center gap-3">
           <a
@@ -189,12 +224,61 @@ function Nav() {
             href="https://instagram.com/plant_bos"
             target="_blank"
             rel="noreferrer"
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 text-foreground/90 hover:border-sage hover:text-sage transition"
+            className="hidden h-10 w-10 items-center justify-center rounded-full border border-white/20 text-foreground/90 hover:border-sage hover:text-sage transition md:flex"
             aria-label="Plantbos on Instagram (opens in new tab)"
           >
             <Instagram className="h-4 w-4" aria-hidden="true" />
           </a>
+          <button
+            type="button"
+            onClick={() => setOpen((v) => !v)}
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 text-foreground transition hover:border-sage hover:text-sage md:hidden"
+            aria-label={open ? "Close menu" : "Open menu"}
+            aria-expanded={open}
+            aria-controls="mobile-menu"
+          >
+            {open ? <X className="h-5 w-5" aria-hidden="true" /> : <Menu className="h-5 w-5" aria-hidden="true" />}
+          </button>
         </div>
+      </div>
+
+      {/* Mobile dropdown menu */}
+      <div
+        id="mobile-menu"
+        className={`fixed inset-x-0 top-[calc(100%+1px)] z-40 overflow-hidden bg-background/95 backdrop-blur-xl transition-all duration-300 ease-out md:hidden ${
+          open ? "max-h-[100dvh] opacity-100" : "max-h-0 opacity-0"
+        }`}
+      >
+        <nav aria-label="Mobile" className="mx-auto flex max-w-7xl flex-col px-6 py-8">
+          {navLinks.map((link) => (
+            <a
+              key={link.href}
+              href={link.href}
+              onClick={() => setOpen(false)}
+              className="border-b border-white/10 py-4 text-lg font-display text-foreground/90 transition hover:text-sage"
+            >
+              {link.label}
+            </a>
+          ))}
+          <a
+            href="#contact"
+            onClick={() => setOpen(false)}
+            className="mt-6 inline-flex items-center justify-center gap-2 rounded-full bg-sage px-6 py-3.5 text-sm font-medium uppercase tracking-widest text-sage-foreground transition hover:bg-sage/90"
+          >
+            Get a Quote
+            <ArrowRight className="h-4 w-4" aria-hidden="true" />
+          </a>
+          <a
+            href="https://instagram.com/plant_bos"
+            target="_blank"
+            rel="noreferrer"
+            className="mt-4 inline-flex items-center justify-center gap-2 rounded-full border border-white/20 px-6 py-3.5 text-sm font-medium text-foreground transition hover:border-sage hover:text-sage"
+            aria-label="Plantbos on Instagram (opens in new tab)"
+          >
+            <Instagram className="h-4 w-4" aria-hidden="true" />
+            Follow @plant_bos
+          </a>
+        </nav>
       </div>
     </header>
   );
@@ -663,7 +747,7 @@ function ContactForm() {
               disabled={status === "sending"}
               className="group mt-2 inline-flex items-center justify-center gap-3 rounded-full bg-sage px-8 py-4 text-sm font-medium uppercase tracking-widest text-sage-foreground shadow-luxe transition hover:bg-sage/90 disabled:opacity-70"
             >
-              {status === "sending" ? "Opening WhatsApp…" : status === "sent" ? "Sent ✓ Send another" : "Book Appointment"}
+              {status === "sending" ? "Opening WhatsApp…" : status === "sent" ? "Sent ✓ Send another" : "book appointment"}
               <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" aria-hidden="true" />
             </button>
             <p className="text-xs text-muted-foreground">
@@ -770,18 +854,17 @@ function WhatsApp() {
 function Index() {
   return (
     <>
-      {/* <a href="#main" className="skip-link">Skip to content</a> */}
       <Nav />
       <main id="main" className="bg-background text-foreground">
         <Hero />
         <Services />
-        <InstagramFeed />
         <WhyUs />
+        <InstagramFeed />
         <CareTips />
-        <ContactForm />
         <Gallery />
         <Testimonials />
-        <Visit />
+        <ContactForm />
+         <Visit />
         <Newsletter />
       </main>
       <Footer />
