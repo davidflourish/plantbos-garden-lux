@@ -66,53 +66,7 @@ export const Route = createFileRoute("/")({
       },
       { name: "twitter:image", content: `${SITE_URL}${hero}` },
     ],
-    links: [
-      { rel: "canonical", href: SITE_URL },
-      { rel: "preload", as: "image", href: hero, fetchpriority: "high" } as any,
-    ],
-    scripts: [
-      {
-        type: "application/ld+json",
-        children: JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "LocalBusiness",
-          "@id": SITE_URL,
-          name: "Plantbos Gardens & Landscape",
-          image: `${SITE_URL}${hero}`,
-          url: SITE_URL,
-          telephone: "+2349035912539",
-          priceRange: "₦₦₦",
-          address: {
-            "@type": "PostalAddress",
-            streetAddress: "Peace Court Estate, Kado–Galadima Road, After Living Faith Junction",
-            addressLocality: "Lokogoma",
-            addressRegion: "FCT",
-            postalCode: "961102",
-            addressCountry: "NG",
-          },
-          geo: { "@type": "GeoCoordinates", latitude: 8.9806, longitude: 7.4467 },
-          openingHours: "Mo-Sa 09:00-18:00",
-          sameAs: ["https://instagram.com/plant_bos"],
-          aggregateRating: {
-            "@type": "AggregateRating",
-            ratingValue: "4.8",
-            reviewCount: "16",
-          },
-        }),
-      },
-      {
-        type: "application/ld+json",
-        children: JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "Service",
-          serviceType: "Garden Design & Landscaping",
-          provider: { "@type": "LocalBusiness", name: "Plantbos Gardens & Landscape" },
-          areaServed: { "@type": "City", name: "Abuja" },
-          description:
-            "Bespoke garden design, professional landscape installation, ongoing maintenance and premium planters across Abuja and the FCT.",
-        }),
-      },
-    ],
+    // links and scripts removed to avoid SSR serialisation issues
   }),
 });
 
@@ -276,7 +230,7 @@ function Nav() {
             aria-label="Plantbos on Instagram (opens in new tab)"
           >
             <Instagram className="h-4 w-4" aria-hidden="true" />
-            Follow @plant_bos
+            See More
           </a>
         </nav>
       </div>
@@ -864,7 +818,7 @@ function Index() {
         <Gallery />
         <Testimonials />
         <ContactForm />
-         <Visit />
+        <Visit />
         <Newsletter />
       </main>
       <Footer />
