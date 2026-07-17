@@ -41,6 +41,7 @@ const SITE_URL = "https://plantbosgarden.vercel.app/";
 export const Route = createFileRoute("/")({
   component: Index,
   head: () => ({
+    // ✅ ONLY meta – no links, no scripts (safe for SSR)
     meta: [
       { title: "Plantbos Gardens & Landscape — Abuja's Premier Garden Center" },
       {
@@ -69,53 +70,6 @@ export const Route = createFileRoute("/")({
         content: "Bring nature home. Rare plants & luxury landscaping in Abuja.",
       },
       { name: "twitter:image", content: `${SITE_URL}${hero}` },
-    ],
-    links: [
-      { rel: "canonical", href: SITE_URL },
-      { rel: "preload", as: "image", href: hero, fetchpriority: "high" } as any,
-    ],
-    scripts: [
-      {
-        type: "application/ld+json",
-        children: JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "LocalBusiness",
-          "@id": SITE_URL,
-          name: "Plantbos Gardens & Landscape",
-          image: `${SITE_URL}${hero}`,
-          url: SITE_URL,
-          telephone: "+2349035912539",
-          priceRange: "₦₦₦",
-          address: {
-            "@type": "PostalAddress",
-            streetAddress: "Peace Court Estate, Kado–Galadima Road, After Living Faith Junction",
-            addressLocality: "Lokogoma",
-            addressRegion: "FCT",
-            postalCode: "961102",
-            addressCountry: "NG",
-          },
-          geo: { "@type": "GeoCoordinates", latitude: 8.9806, longitude: 7.4467 },
-          openingHours: "Mo-Sa 09:00-18:00",
-          sameAs: ["https://instagram.com/plant_bos"],
-          aggregateRating: {
-            "@type": "AggregateRating",
-            ratingValue: "4.8",
-            reviewCount: "16",
-          },
-        }),
-      },
-      {
-        type: "application/ld+json",
-        children: JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "Service",
-          serviceType: "Garden Design & Landscaping",
-          provider: { "@type": "LocalBusiness", name: "Plantbos Gardens & Landscape" },
-          areaServed: { "@type": "City", name: "Abuja" },
-          description:
-            "Bespoke garden design, professional landscape installation, ongoing maintenance and premium planters across Abuja and the FCT.",
-        }),
-      },
     ],
   }),
 });
@@ -194,9 +148,8 @@ function Nav() {
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
-        scrolled || open ? "bg-background/90 backdrop-blur-xl border-b border-white/10 py-3" : "bg-transparent py-6"
-      }`}
+      className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${scrolled || open ? "bg-background/90 backdrop-blur-xl border-b border-white/10 py-3" : "bg-transparent py-6"
+        }`}
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6">
         <a href="#top" className="flex items-center gap-2" aria-label="Plantbos home">
@@ -238,12 +191,10 @@ function Nav() {
         </div>
       </div>
 
-      {/* Mobile dropdown menu */}
       <div
         id="mobile-menu"
-        className={`fixed inset-x-0 top-[calc(100%+1px)] z-40 overflow-hidden bg-background/95 backdrop-blur-xl transition-all duration-300 ease-out md:hidden ${
-          open ? "max-h-[100dvh] opacity-100" : "max-h-0 opacity-0"
-        }`}
+        className={`fixed inset-x-0 top-[calc(100%+1px)] z-40 overflow-hidden bg-background/95 backdrop-blur-xl transition-all duration-300 ease-out md:hidden ${open ? "max-h-[100dvh] opacity-100" : "max-h-0 opacity-0"
+          }`}
       >
         <nav aria-label="Mobile" className="mx-auto flex max-w-7xl flex-col px-6 py-8">
           {navLinks.map((link) => (
@@ -428,9 +379,8 @@ function InstagramFeed() {
           {featuredImages.map((img, i) => (
             <div
               key={i}
-              className={`group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 ${
-                i === 0 || i === 5 ? "row-span-2 aspect-[3/4] sm:aspect-[3/5]" : "aspect-square"
-              }`}
+              className={`group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 ${i === 0 || i === 5 ? "row-span-2 aspect-[3/4] sm:aspect-[3/5]" : "aspect-square"
+                }`}
             >
               <img
                 src={img.src}
@@ -451,7 +401,7 @@ function InstagramFeed() {
             className="group inline-flex items-center gap-3 rounded-full bg-sage px-10 py-4 text-sm uppercase tracking-widest text-sage-foreground shadow-luxe transition hover:bg-sage/90"
           >
             <Instagram className="h-4 w-4" aria-hidden="true" />
-           see more products
+            see more products
             <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" aria-hidden="true" />
           </a>
           <a
