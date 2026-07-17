@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState, useRef } from "react";
 import {
   Leaf,
@@ -27,10 +27,14 @@ import {
 import hero from "@/assets/hero.jpg";
 import logoWhite from "@/assets/logo-white.png";
 import logoGreen from "@/assets/logo-green.png";
-import g1 from "@/assets/gallery-1.jpg";
-import g2 from "@/assets/gallery-2.jpg";
-import g3 from "@/assets/gallery-3.jpg";
-import g4 from "@/assets/gallery-4.jpg";
+import recent1 from "@/assets/recent/recent-1.jpg";
+import recent2 from "@/assets/recent/recent-2.jpg";
+import recent3 from "@/assets/recent/recent-3.jpg";
+import recent4 from "@/assets/recent/recent-4.jpg";
+import recent5 from "@/assets/recent/recent-5.jpg";
+import recent6 from "@/assets/recent/recent-6.jpg";
+import recent7 from "@/assets/recent/recent-7.jpg";
+import recent8 from "@/assets/recent/recent-8.jpg";
 
 const SITE_URL = "https://plantbosgarden.vercel.app/";
 
@@ -66,7 +70,53 @@ export const Route = createFileRoute("/")({
       },
       { name: "twitter:image", content: `${SITE_URL}${hero}` },
     ],
-    // links and scripts removed to avoid SSR serialisation issues
+    links: [
+      { rel: "canonical", href: SITE_URL },
+      { rel: "preload", as: "image", href: hero, fetchpriority: "high" } as any,
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "LocalBusiness",
+          "@id": SITE_URL,
+          name: "Plantbos Gardens & Landscape",
+          image: `${SITE_URL}${hero}`,
+          url: SITE_URL,
+          telephone: "+2349035912539",
+          priceRange: "₦₦₦",
+          address: {
+            "@type": "PostalAddress",
+            streetAddress: "Peace Court Estate, Kado–Galadima Road, After Living Faith Junction",
+            addressLocality: "Lokogoma",
+            addressRegion: "FCT",
+            postalCode: "961102",
+            addressCountry: "NG",
+          },
+          geo: { "@type": "GeoCoordinates", latitude: 8.9806, longitude: 7.4467 },
+          openingHours: "Mo-Sa 09:00-18:00",
+          sameAs: ["https://instagram.com/plant_bos"],
+          aggregateRating: {
+            "@type": "AggregateRating",
+            ratingValue: "4.8",
+            reviewCount: "16",
+          },
+        }),
+      },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Service",
+          serviceType: "Garden Design & Landscaping",
+          provider: { "@type": "LocalBusiness", name: "Plantbos Gardens & Landscape" },
+          areaServed: { "@type": "City", name: "Abuja" },
+          description:
+            "Bespoke garden design, professional landscape installation, ongoing maintenance and premium planters across Abuja and the FCT.",
+        }),
+      },
+    ],
   }),
 });
 
@@ -90,26 +140,18 @@ const testimonials = [
   { name: "Hauwa B.", role: "Boutique Owner, Wuse", quote: "Their rare collection is a dream. The Pink Princess they delivered is absolutely thriving." },
 ];
 
-const careTips = [
-  {
-    icon: Droplets,
-    tag: "Watering",
-    title: "How often should you water indoor plants in Abuja?",
-    excerpt: "In Abuja's dry season, most tropicals need water once a week — but check the top inch of soil first. Here's a simple finger-test that prevents 80% of houseplant deaths.",
-  },
-  {
-    icon: Sun,
-    tag: "Light",
-    title: "Choosing plants for low-light homes",
-    excerpt: "Snake plants, ZZ plants and pothos thrive in the shaded corners of Abuja apartments. Learn the light zones in your space and the perfect plant for each.",
-  },
-  {
-    icon: Scissors,
-    tag: "Care",
-    title: "Fiddle leaf figs: a first-year survival guide",
-    excerpt: "The fiddle leaf is famously fussy. Follow our five-step routine for the first twelve months and you'll grow a tree that owns the room.",
-  },
-];
+import { plantCategories } from "@/lib/plant-categories";
+import { Home as HomeIcon, Briefcase, Sprout } from "lucide-react";
+
+const categoryIconMap = {
+  home: HomeIcon,
+  trees: Trees,
+  flower: FlowerIcon,
+  briefcase: Briefcase,
+  sparkles: Sparkles,
+  sprout: Sprout,
+  leaf: Leaf,
+} as const;
 
 const navLinks = [
   { label: "Shop", href: "#shop" },
@@ -230,7 +272,7 @@ function Nav() {
             aria-label="Plantbos on Instagram (opens in new tab)"
           >
             <Instagram className="h-4 w-4" aria-hidden="true" />
-            See More
+            Follow @plant_bos
           </a>
         </nav>
       </div>
@@ -340,29 +382,31 @@ function Services() {
   );
 }
 
+import featured1 from "@/assets/featured/featured-1.jpg";
+import featured2 from "@/assets/featured/featured-2.jpg";
+import featured3 from "@/assets/featured/featured-3.jpg";
+import featured4 from "@/assets/featured/featured-4.jpg";
+import featured5 from "@/assets/featured/featured-5.jpg";
+import featured6 from "@/assets/featured/featured-6.jpg";
+import featured7 from "@/assets/featured/featured-7.jpg";
+import featured8 from "@/assets/featured/featured-8.jpg";
+import featured9 from "@/assets/featured/featured-9.jpg";
+import featured10 from "@/assets/featured/featured-10.jpg";
+
+const featuredImages: { src: string; alt: string }[] = [
+  { src: featured1, alt: "Plantbos team packaging a plant order" },
+  { src: featured2, alt: "Customer holding a blooming orchid in a white pot" },
+  { src: featured3, alt: "Shoppers browsing lush palms at Plantbos" },
+  { src: featured4, alt: "Customer holding a pink aglaonema plant" },
+  { src: featured5, alt: "Marble pothos in a woven rabbit-shaped planter" },
+  { src: featured6, alt: "Glass terrarium with moss and ferns" },
+  { src: featured7, alt: "Pink kalanchoe in a glass jar arrangement" },
+  { src: featured8, alt: "Succulents, cacti and snake plants in white ceramic pots" },
+  { src: featured9, alt: "Pilea peperomioides and aglaonema on wooden shelves" },
+  { src: featured10, alt: "Cacti and pilea plants in modern white planters" },
+];
+
 function InstagramFeed() {
-  const wrapRef = useRef<HTMLDivElement>(null);
-  const [loaded, setLoaded] = useState(false);
-
-  useEffect(() => {
-    // Lazy-load LightWidget script only when user scrolls near the section
-    if (!wrapRef.current) return;
-    const io = new IntersectionObserver(
-      (entries) => {
-        if (entries.some((e) => e.isIntersecting) && !loaded) {
-          const s = document.createElement("script");
-          s.src = "https://cdn.lightwidget.com/widgets/lightwidget.js";
-          s.async = true;
-          document.body.appendChild(s);
-          setLoaded(true);
-        }
-      },
-      { rootMargin: "300px" },
-    );
-    io.observe(wrapRef.current);
-    return () => io.disconnect();
-  }, [loaded]);
-
   return (
     <section id="shop" aria-labelledby="shop-heading" className="bg-background py-32">
       <div className="mx-auto max-w-7xl px-6">
@@ -374,23 +418,29 @@ function InstagramFeed() {
             </h2>
           </div>
           <p className="max-w-md text-sm leading-relaxed text-muted-foreground">
-            Every plant on our Instagram is real, in stock, and ready to travel to your home. DM us{" "}
+            Every plant is real, in stock, and ready to travel to your home. DM us{" "}
             <a href="https://instagram.com/plant_bos" target="_blank" rel="noreferrer" className="text-sage underline underline-offset-4 hover:text-terracotta">@plant_bos</a>{" "}
             to reserve, or shop in-store in Lokogoma.
           </p>
         </div>
 
-        <div ref={wrapRef} className="mt-16 overflow-hidden rounded-3xl border border-white/10 bg-white/5 p-2">
-          {/* LightWidget — @plant_bos Instagram feed. Replace data-widget-id with the user's own from lightwidget.com after they claim the free widget. */}
-          <iframe
-            src="https://cdn.lightwidget.com/widgets/2f6c3d9f4b8a5c1e7d0a9f2b3e5c4d6a.html"
-            title="Plantbos Instagram feed"
-            className="lightwidget-widget"
-            style={{ width: "100%", border: 0, overflow: "hidden", minHeight: 520 }}
-            scrolling="no"
-            allowTransparency
-            loading="lazy"
-          />
+        <div className="mt-16 grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4">
+          {featuredImages.map((img, i) => (
+            <div
+              key={i}
+              className={`group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 ${
+                i === 0 || i === 5 ? "row-span-2 aspect-[3/4] sm:aspect-[3/5]" : "aspect-square"
+              }`}
+            >
+              <img
+                src={img.src}
+                alt={img.alt}
+                loading="lazy"
+                decoding="async"
+                className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
+              />
+            </div>
+          ))}
         </div>
 
         <div className="mt-12 flex flex-col items-center justify-center gap-4 sm:flex-row">
@@ -401,7 +451,7 @@ function InstagramFeed() {
             className="group inline-flex items-center gap-3 rounded-full bg-sage px-10 py-4 text-sm uppercase tracking-widest text-sage-foreground shadow-luxe transition hover:bg-sage/90"
           >
             <Instagram className="h-4 w-4" aria-hidden="true" />
-            See more products
+           see more products
             <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" aria-hidden="true" />
           </a>
           <a
@@ -411,7 +461,7 @@ function InstagramFeed() {
             className="inline-flex items-center gap-3 rounded-full border border-white/30 px-10 py-4 text-sm uppercase tracking-widest text-foreground transition hover:border-sage hover:text-sage"
           >
             <MessageCircle className="h-4 w-4" aria-hidden="true" />
-            Get our product
+            get our product
           </a>
         </div>
       </div>
@@ -456,34 +506,47 @@ function CareTips() {
     <section id="care" aria-labelledby="care-heading" className="bg-background py-32">
       <div className="mx-auto max-w-7xl px-6">
         <div className="mx-auto max-w-2xl text-center">
-          <p className="text-xs uppercase tracking-[0.4em] text-sage">Plant care tips</p>
+          <p className="text-xs uppercase tracking-[0.4em] text-sage">Plant care knowledge</p>
           <h2 id="care-heading" className="mt-4 text-balance text-5xl font-light leading-tight md:text-6xl">
             Grow with confidence.
           </h2>
           <p className="mt-6 text-sm leading-relaxed text-muted-foreground">
-            Short, practical guides from our horticulturists — written for Abuja's climate.
+            Seven plant families, tailored for Abuja's Harmattan & Rainy seasons. Pick a category to explore care guides for every plant we grow.
           </p>
         </div>
-        <div className="mt-20 grid gap-8 md:grid-cols-3">
-          {careTips.map(({ icon: Icon, tag, title, excerpt }) => (
-            <article key={title} className="group flex flex-col rounded-3xl border border-white/10 bg-card p-8 transition hover:border-sage hover:shadow-luxe">
-              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-sage/15 text-sage" aria-hidden="true">
-                <Icon className="h-5 w-5" strokeWidth={1.5} />
-              </div>
-              <p className="mt-6 text-[10px] uppercase tracking-[0.3em] text-sage">{tag}</p>
-              <h3 className="mt-3 font-display text-2xl font-light leading-snug">{title}</h3>
-              <p className="mt-4 flex-1 text-sm leading-relaxed text-muted-foreground">{excerpt}</p>
-              <a
-                href="https://wa.me/2349035912539"
-                target="_blank"
-                rel="noreferrer"
-                className="mt-6 inline-flex items-center gap-2 text-xs font-medium uppercase tracking-widest text-sage transition hover:text-terracotta"
+        <div className="mt-20 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {plantCategories.map((cat) => {
+            const Icon = categoryIconMap[cat.icon];
+            return (
+              <Link
+                key={cat.slug}
+                to="/category/$slug"
+                params={{ slug: cat.slug }}
+                className={`group relative flex flex-col overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br ${cat.accent} p-8 transition duration-500 hover:-translate-y-2 hover:border-sage hover:shadow-luxe`}
               >
-                Ask our team
-                <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" aria-hidden="true" />
-              </a>
-            </article>
-          ))}
+                <div className="flex items-start justify-between">
+                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-background/40 text-sage backdrop-blur-sm" aria-hidden="true">
+                    <Icon className="h-6 w-6" strokeWidth={1.4} />
+                  </div>
+                  <span className="font-display text-3xl font-light text-foreground/40">{cat.number}</span>
+                </div>
+                <h3 className="mt-8 font-display text-2xl font-light leading-snug text-foreground">
+                  {cat.title}
+                </h3>
+                <p className="mt-3 text-sm leading-relaxed text-foreground/80">
+                  {cat.description}
+                </p>
+                <div className="mt-3 max-h-0 overflow-hidden opacity-0 transition-all duration-500 group-hover:max-h-24 group-hover:opacity-100">
+                  <p className="text-[11px] uppercase tracking-[0.25em] text-sage">Best for</p>
+                  <p className="mt-1 text-xs leading-relaxed text-foreground/75">{cat.bestFor}</p>
+                </div>
+                <div className="mt-6 flex items-center justify-between border-t border-white/10 pt-5">
+                  <span className="text-xs font-medium uppercase tracking-widest text-sage">Explore</span>
+                  <ArrowRight className="h-4 w-4 text-sage transition group-hover:translate-x-1" aria-hidden="true" />
+                </div>
+              </Link>
+            );
+          })}
         </div>
       </div>
     </section>
@@ -536,7 +599,16 @@ function Visit() {
 }
 
 function Gallery() {
-  const images = [g1, g2, g3, g4];
+  const images = [
+    { src: recent1, alt: "Lush dracaena and rubber plants at Plantbos garden Abuja" },
+    { src: recent2, alt: "Money tree plants in decorative planters" },
+    { src: recent3, alt: "Customer shopping at Plantbos garden showroom" },
+    { src: recent4, alt: "Plantbos team assisting a customer with purchase" },
+    { src: recent5, alt: "Curated indoor plant display at Plantbos Abuja" },
+    { src: recent6, alt: "Marble pothos in a bunny-shaped rattan planter" },
+    { src: recent7, alt: "Succulents and cacti collection in ceramic pots" },
+    { src: recent8, alt: "Chinese money plant and cacti arrangement" },
+  ];
   return (
     <section aria-labelledby="gallery-heading" className="bg-background py-32">
       <div className="mx-auto max-w-7xl px-6">
@@ -555,11 +627,11 @@ function Gallery() {
           </a>
         </div>
         <div className="mt-12 grid grid-cols-2 gap-3 md:grid-cols-4">
-          {images.map((src, i) => (
+          {images.map((img, i) => (
             <figure key={i} className="group relative aspect-square overflow-hidden rounded-2xl">
               <img
-                src={src}
-                alt={`Plantbos landscaping project ${i + 1} in Abuja`}
+                src={img.src}
+                alt={img.alt}
                 loading="lazy"
                 decoding="async"
                 className="h-full w-full object-cover transition duration-700 group-hover:scale-110"
@@ -701,7 +773,7 @@ function ContactForm() {
               disabled={status === "sending"}
               className="group mt-2 inline-flex items-center justify-center gap-3 rounded-full bg-sage px-8 py-4 text-sm font-medium uppercase tracking-widest text-sage-foreground shadow-luxe transition hover:bg-sage/90 disabled:opacity-70"
             >
-              {status === "sending" ? "Opening WhatsApp…" : status === "sent" ? "Sent ✓ Send another" : "book appointment"}
+              {status === "sending" ? "Opening WhatsApp…" : status === "sent" ? "Sent ✓ Send another" : "BOOK APPOINTMENT"}
               <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" aria-hidden="true" />
             </button>
             <p className="text-xs text-muted-foreground">
@@ -812,13 +884,13 @@ function Index() {
       <main id="main" className="bg-background text-foreground">
         <Hero />
         <Services />
-        <WhyUs />
         <InstagramFeed />
+        <WhyUs />
         <CareTips />
+        <Visit />
         <Gallery />
         <Testimonials />
         <ContactForm />
-        <Visit />
         <Newsletter />
       </main>
       <Footer />
