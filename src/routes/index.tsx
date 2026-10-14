@@ -57,6 +57,11 @@ export const Route = createFileRoute("/")({
         name: "robots",
         content: "index, follow, max-image-preview:large",
       },
+      // Google Search Console verification
+      {
+        name: "google-site-verification",
+        content: "3Ejo1Ux4Oyk4GTGXXcCP7ycybLtGl9usdzXD82DXjNs",
+      },
 
       // Open Graph: social sharing
       { property: "og:type", content: "website" },
