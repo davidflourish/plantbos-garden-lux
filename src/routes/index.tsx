@@ -36,7 +36,7 @@ import recent6 from "@/assets/recent/recent-6.jpg";
 import recent7 from "@/assets/recent/recent-7.jpg";
 import recent8 from "@/assets/recent/recent-8.jpg";
 
-const SITE_URL = "https://plantbosgarden.vercel.app/";
+const SITE_URL = "https://www.plantbosgardensandlandscapes.com.ng/";
 
 export const Route = createFileRoute("/")({
   component: Index,
