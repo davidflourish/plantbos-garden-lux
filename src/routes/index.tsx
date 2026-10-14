@@ -37,6 +37,7 @@ import recent7 from "@/assets/recent/recent-7.jpg";
 import recent8 from "@/assets/recent/recent-8.jpg";
 
 
+
 const SITE_URL = "https://www.plantbosgardensandlandscapes.com.ng";
 const HOME_URL = `${SITE_URL}/`;
 const HERO_URL = new URL(hero, HOME_URL).href;
@@ -46,14 +47,12 @@ export const Route = createFileRoute("/")({
 
   head: () => ({
     meta: [
-     {
-  title: "Best Landscaping in Abuja | Plantbos Gardens",
-},
-{
-  name: "description",
-  content:
-    "Looking for the best landscaping in Abuja? Plantbos Gardens offers professional landscaping, garden design, plant sales and garden maintenance to transform your space. Enquire today.",
-},
+      { title: "Landscaping in Abuja | Plantbos Gardens" },
+      {
+        name: "description",
+        content:
+          "Transform your outdoor space with Plantbos Gardens. Explore landscaping, garden design, plant sales and garden maintenance services in Abuja. Contact us today.",
+      },
       {
         name: "robots",
         content: "index, follow, max-image-preview:large",
@@ -99,6 +98,7 @@ export const Route = createFileRoute("/")({
     ],
   }),
 });
+
 
 
 const services = [
