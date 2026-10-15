@@ -36,40 +36,75 @@ import recent6 from "@/assets/recent/recent-6.jpg";
 import recent7 from "@/assets/recent/recent-7.jpg";
 import recent8 from "@/assets/recent/recent-8.jpg";
 
-const SITE_URL = "https://plantbosgarden.vercel.app/";
+const SITE_URL = "https://www.plantbosgardensandlandscapes.com.ng";
+const HOME_URL = `${SITE_URL}/`;
+const HERO_URL = new URL(hero, HOME_URL).href;
 
 export const Route = createFileRoute("/")({
   component: Index,
+
   head: () => ({
-    // ✅ ONLY meta – no links, no scripts (safe for SSR)
     meta: [
-      { title: "Plantbos Gardens & Landscape — Abuja's Premier Garden Center" },
+      { title: "Landscaping in Abuja | Plantbos Gardens" },
       {
         name: "description",
         content:
-          "Buy rare indoor plants, hire expert landscapers, and shop premium planters in Abuja. Delivery, kerbside pickup, and in-store shopping in Lokogoma. Book a free consultation today.",
+          "Transform your outdoor space with Plantbos Gardens. Explore landscaping, garden design, plant sales and garden maintenance services in Abuja. Contact us today.",
       },
       {
-        name: "keywords",
-        content:
-          "garden center Abuja, plants Abuja, landscaping Abuja, rare plants Nigeria, indoor plants Abuja, Lokogoma nursery, Plantbos, plant delivery Abuja, garden design Nigeria",
+        name: "robots",
+        content: "index, follow, max-image-preview:large",
       },
-      { name: "robots", content: "index, follow" },
-      { property: "og:title", content: "Plantbos Gardens & Landscape — Abuja" },
+
+      // Google Search Console verification
+      {
+        name: "google-site-verification",
+        content: "3Ejo1Ux4Oyk4GTGXXcCP7ycybLtGl9usdzXD82DXjNs",
+      },
+
+      // Open Graph: social sharing
+      { property: "og:type", content: "website" },
+      { property: "og:site_name", content: "Plantbos Gardens & Landscapes" },
+      { property: "og:locale", content: "en_NG" },
+      {
+        property: "og:title",
+        content: "Landscaping in Abuja | Plantbos Gardens",
+      },
       {
         property: "og:description",
         content:
-          "Rare & exotic plants, luxury landscaping and premium planters. Abuja's most-loved garden center.",
+          "Discover professional landscaping, garden design and plant services in Abuja with Plantbos Gardens.",
       },
-      { property: "og:type", content: "website" },
-      { property: "og:url", content: SITE_URL },
-      { property: "og:image", content: `${SITE_URL}${hero}` },
-      { name: "twitter:title", content: "Plantbos Gardens & Landscape" },
+      { property: "og:url", content: HOME_URL },
+      { property: "og:image", content: HERO_URL },
+      {
+        property: "og:image:alt",
+        content: "Garden and landscaping services by Plantbos Gardens in Abuja",
+      },
+
+      // X / Twitter sharing
+      { name: "twitter:card", content: "summary_large_image" },
+      {
+        name: "twitter:title",
+        content: "Landscaping in Abuja | Plantbos Gardens",
+      },
       {
         name: "twitter:description",
-        content: "Bring nature home. Rare plants & luxury landscaping in Abuja.",
+        content:
+          "Explore garden design, landscaping and plant services in Abuja with Plantbos Gardens.",
       },
-      { name: "twitter:image", content: `${SITE_URL}${hero}` },
+      { name: "twitter:image", content: HERO_URL },
+      {
+        name: "twitter:image:alt",
+        content: "Plantbos Gardens landscaping services in Abuja",
+      },
+    ],
+
+    links: [
+      {
+        rel: "canonical",
+        href: HOME_URL,
+      },
     ],
   }),
 });
