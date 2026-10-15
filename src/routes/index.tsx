@@ -51,6 +51,16 @@ export const Route = createFileRoute("/")({
         content:
           "Transform your outdoor space with Plantbos Gardens. Explore landscaping, garden design, plant sales and garden maintenance services in Abuja. Contact us today.",
       },
+      
+      {
+  title: "Best Landscaping in Abuja | Plantbos Gardens",
+},
+{
+  name: "description",
+  content:
+    "Looking for the best landscaping in Abuja? Plantbos Gardens offers professional landscaping, garden design, plant sales and garden maintenance to transform your space. Enquire today.",
+},
+
       {
         name: "robots",
         content: "index, follow, max-image-preview:large",
