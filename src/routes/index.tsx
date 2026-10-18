@@ -564,9 +564,9 @@ function Visit() {
             <li className="flex gap-4">
               <MapPin className="mt-1 h-5 w-5 shrink-0 text-sage" strokeWidth={1.5} aria-hidden="true" />
               <span className="leading-relaxed text-foreground/95">
-                Peace Court Estate, Kado–Galadima Road,<br />
-                After Living Faith Junction, Lokogoma,<br />
-                Abuja 961102
+                Plot 3508, Cadestral Zone B11,<br />
+                Kaura District Galadimawa, Opposite Kingfem Estate,<br />
+                Abuja 961102, Federal Capital Territory
               </span>
             </li>
             <li className="flex gap-4">
@@ -582,7 +582,7 @@ function Visit() {
         <div className="relative overflow-hidden rounded-3xl border border-white/10 shadow-luxe">
           <iframe
             title="Plantbos Gardens location on Google Maps"
-            src="https://www.google.com/maps?q=Lokogoma+Abuja&output=embed"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3940.8127433128793!2d7.426785074408132!3d8.989371991070383!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x104e0d1a8c93b7b9%3A0x28c84c959f1c21a2!2sPlantbos%20Botanical%20%26%20Recreational%20Park!5e0!3m2!1sen!2sng!4v1792293641216!5m2!1sen!2sng"
             className="h-[520px] w-full grayscale-[40%] contrast-110"
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
