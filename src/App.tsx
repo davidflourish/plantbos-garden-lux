@@ -4,6 +4,8 @@ import { Layout } from '@/components/Layout';
 import { HomePage } from '@/pages/HomePage';
 import { ShopPage } from '@/pages/ShopPage';
 import { CategoryPage } from '@/pages/CategoryPage';
+import { PlantCarePage } from '@/pages/PlantCarePage';
+import { GalleryPage } from '@/pages/GalleryPage';
 import { AdminLoginPage } from '@/pages/AdminLoginPage';
 import { AdminDashboardPage } from '@/pages/AdminDashboardPage';
 
@@ -15,7 +17,9 @@ function App() {
           <Route path="/" element={<Layout><HomePage /></Layout>} />
           <Route path="/shop" element={<Layout><ShopPage /></Layout>} />
           <Route path="/shop/:slug" element={<Layout><ShopPage /></Layout>} />
+          <Route path="/plant-care" element={<Layout><PlantCarePage /></Layout>} />
           <Route path="/plant-care/:slug" element={<Layout><CategoryPage /></Layout>} />
+          <Route path="/gallery" element={<Layout><GalleryPage /></Layout>} />
           <Route path="/admin/login" element={<AdminLoginPage />} />
           <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />

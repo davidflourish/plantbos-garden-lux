@@ -24,48 +24,11 @@ import {
 import { Logo } from '@/components/Logo';
 import { getWhatsAppLink, siteConfig } from '@/lib/config';
 import { plantCategories } from '@/lib/plantCare';
-import { classNames } from '@/lib/utils';
+import { classNames, formatNaira } from '@/lib/utils';
 import { setPageMeta } from '@/lib/seo';
-
-// ---------- curated featured collection (homepage showcase) ----------
-const featuredPlants = [
-  {
-    name: 'Monstera Deliciosa',
-    desc: 'Iconic split leaves. Thrives in bright indirect light.',
-    price: 25000,
-    img: 'https://images.pexels.com/photos/4484184/pexels-photo-4484184.jpeg?auto=compress&cs=tinysrgb&h=650&w=940',
-  },
-  {
-    name: 'Fiddle Leaf Fig',
-    desc: 'Statement tree with sculptural violin-shaped leaves.',
-    price: 45000,
-    img: 'https://images.pexels.com/photos/9369637/pexels-photo-9369637.jpeg?auto=compress&cs=tinysrgb&h=650&w=940',
-  },
-  {
-    name: 'Bird of Paradise',
-    desc: 'Tropical giant with dramatic paddle-shaped foliage.',
-    price: 60000,
-    img: 'https://images.pexels.com/photos/11545345/pexels-photo-11545345.jpeg?auto=compress&cs=tinysrgb&h=650&w=940',
-  },
-  {
-    name: 'Philodendron',
-    desc: 'Lush trailing vines. Effortless and forgiving.',
-    price: 18000,
-    img: 'https://images.pexels.com/photos/4607446/pexels-photo-4607446.jpeg?auto=compress&cs=tinysrgb&h=650&w=940',
-  },
-  {
-    name: 'Variegated Monstera',
-    desc: 'Rare collector specimen with marbled cream foliage.',
-    price: 180000,
-    img: 'https://images.pexels.com/photos/5084183/pexels-photo-5084183.jpeg?auto=compress&cs=tinysrgb&h=650&w=940',
-  },
-  {
-    name: 'Snake Plant',
-    desc: 'Architectural and near-indestructible. Air-purifying.',
-    price: 12000,
-    img: 'https://images.pexels.com/photos/1190903/pexels-photo-1190903.jpeg?auto=compress&cs=tinysrgb&h=650&w=940',
-  },
-];
+import { useProducts } from '@/lib/useProducts';
+import { ProductImage } from '@/components/ProductImage';
+import { galleryImages } from '@/lib/gallery';
 
 const services = [
   {
@@ -115,17 +78,6 @@ const testimonials = [
   },
 ];
 
-const instagramGallery = [
-  '/images/follow-the-journey/recent-7.jpg',
-  '/images/follow-the-journey/recent-3.jpg',
-  '/images/follow-the-journey/recent-2.jpg',
-  '/images/follow-the-journey/featured-1.jpg',
-  '/images/follow-the-journey/featured-2.jpg',
-  '/images/follow-the-journey/featured-9.jpg',
-  '/images/follow-the-journey/recent-8.jpg',
-  '/images/follow-the-journey/featured-4.jpg',
-];
-
 const categoryIcons: Record<string, typeof Home> = {
   home: Home,
   trees: Trees,
@@ -137,6 +89,7 @@ const categoryIcons: Record<string, typeof Home> = {
 };
 
 const heroImages = [
+  'https://images.pexels.com/photos/11518498/pexels-photo-11518498.jpeg?auto=compress&cs=tinysrgb&h=650&w=940',
   'https://images.pexels.com/photos/5472387/pexels-photo-5472387.jpeg?auto=compress&cs=tinysrgb&h=650&w=940',
   'https://images.pexels.com/photos/33456527/pexels-photo-33456527.jpeg?auto=compress&cs=tinysrgb&h=650&w=940',
   'https://images.pexels.com/photos/28787255/pexels-photo-28787255.jpeg?auto=compress&cs=tinysrgb&h=650&w=940',
@@ -162,6 +115,9 @@ function Hero() {
           key={heroImages[activeImage]}
           src={heroImages[activeImage]}
           alt="Lush tropical plants in a sunlit garden center"
+          loading={activeImage === 0 ? 'eager' : 'lazy'}
+          fetchPriority={activeImage === 0 ? 'high' : 'low'}
+          decoding="async"
           className="w-full h-full object-cover animate-hero-image"
         />
         <div className="absolute inset-0 bg-[var(--gradient-hero)]" />
@@ -279,13 +235,13 @@ function Services() {
           {services.map((s) => (
             <div
               key={s.title}
-              className="group bg-[#0F4D36]/60 border border-white/10 rounded-2xl p-8 hover:bg-[#0F4D36] hover:border-[#1E6B4E]/50 hover:-translate-y-1 transition-all duration-300"
+              className="group bg-[#0F4D36]/60 border border-white/10 rounded-2xl p-5 sm:p-8 hover:bg-[#0F4D36] hover:border-[#1E6B4E]/50 hover:-translate-y-1 transition-all duration-300"
             >
-              <div className="w-14 h-14 rounded-xl bg-[#1E6B4E]/30 flex items-center justify-center mb-6 group-hover:bg-[#1E6B4E] transition-colors">
-                <s.icon className="w-7 h-7 text-[#4DA583]" />
+              <div className="w-11 h-11 sm:w-14 sm:h-14 rounded-xl bg-[#1E6B4E]/30 flex items-center justify-center mb-4 sm:mb-6 group-hover:bg-[#1E6B4E] transition-colors">
+                <s.icon className="w-5 h-5 sm:w-7 sm:h-7 text-[#4DA583]" />
               </div>
-              <h3 className="font-serif text-xl text-white mb-3">{s.title}</h3>
-              <p className="text-sm text-white/75 leading-relaxed">{s.desc}</p>
+              <h3 className="font-serif text-lg sm:text-xl text-white mb-2 sm:mb-3">{s.title}</h3>
+              <p className="text-xs sm:text-sm text-white/75 leading-relaxed">{s.desc}</p>
             </div>
           ))}
         </div>
@@ -385,6 +341,8 @@ function ConsultationForm() {
 
 // ---------- Featured Collection ----------
 function FeaturedCollection() {
+  const { products, loading, error } = useProducts({ limit: 6, includeCategories: false });
+
   return (
     <section className="bg-[var(--background)] py-20 sm:py-28">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -393,7 +351,7 @@ function FeaturedCollection() {
             <p className="text-[#D97757] text-sm font-semibold tracking-widest uppercase mb-3">
               Curated for You
             </p>
-            <h2 className="font-serif text-4xl sm:text-5xl text-white">Featured Collection</h2>
+            <h2 className="font-serif text-4xl sm:text-5xl text-white">Shop Plant</h2>
           </div>
           <Link
             to="/shop"
@@ -404,38 +362,56 @@ function FeaturedCollection() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {featuredPlants.map((p) => (
-            <Link
-              to="/shop"
-              key={p.name}
-              className="group bg-[#0F4D36]/50 border border-white/10 rounded-2xl overflow-hidden hover:border-[#1E6B4E]/60 hover:-translate-y-1 transition-all duration-300"
-            >
-              <div className="aspect-square overflow-hidden">
-                <img
-                  src={p.img}
-                  alt={p.name}
-                  loading="lazy"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+        {loading && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+            {Array.from({ length: 6 }).map((_, index) => (
+              <div key={index} className="aspect-[4/3] sm:aspect-[0.92] rounded-2xl bg-white/5 animate-pulse" />
+            ))}
+          </div>
+        )}
+        {error && !loading && (
+          <p className="rounded-2xl border border-white/10 bg-white/5 px-5 py-6 text-center text-white/70">
+            We could not load the latest collection right now.
+          </p>
+        )}
+        {!loading && !error && products.length > 0 && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+            {products.map((product, index) => (
+              <Link
+                to={`/shop/${product.slug}`}
+                key={product.id}
+                className={classNames(
+                  'group bg-[#0F4D36]/50 border border-white/10 rounded-2xl overflow-hidden hover:border-[#1E6B4E]/60 hover:-translate-y-1 transition-all duration-300',
+                  index > 1 ? 'hidden sm:block' : ''
+                )}
+              >
+                <ProductImage
+                  src={product.main_image_url}
+                  alt={product.name}
+                  className="aspect-[4/3] sm:aspect-square"
+                  imgClassName="group-hover:scale-105 transition-transform duration-500"
                 />
-              </div>
-              <div className="p-5">
-                <h3 className="font-serif text-xl text-white">{p.name}</h3>
-                <p className="text-sm text-white/70 mt-1.5 leading-relaxed">{p.desc}</p>
-                <p className="mt-4 text-lg font-semibold text-[#4DA583]">
-                  ₦{p.price.toLocaleString()}
-                </p>
-              </div>
-            </Link>
-          ))}
-        </div>
+                <div className="p-4 sm:p-5">
+                  <h3 className="font-serif text-lg sm:text-xl text-white">{product.name}</h3>
+                  <p className="text-xs sm:text-sm text-white/70 mt-1.5 leading-relaxed line-clamp-2">{product.description}</p>
+                  <p className="mt-3 sm:mt-4 text-base sm:text-lg font-semibold text-[#4DA583]">{formatNaira(product.price)}</p>
+                </div>
+              </Link>
+            ))}
+          </div>
+        )}
+        {!loading && !error && products.length === 0 && (
+          <p className="rounded-2xl border border-white/10 bg-white/5 px-5 py-6 text-center text-white/70">
+            New plants are being added soon. Browse the shop for the latest availability.
+          </p>
+        )}
 
         <div className="mt-12 text-center">
           <Link
             to="/shop"
             className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-[#1E6B4E] text-white font-semibold hover:bg-[#2A8060] hover:scale-105 transition-all shadow-lg"
           >
-            Browse Full Collection
+            View All Plants
             <ArrowRight className="w-5 h-5" />
           </Link>
         </div>
@@ -492,23 +468,24 @@ function PlantCareSection() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {plantCategories.map((cat) => {
+          {plantCategories.map((cat, index) => {
             const Icon = categoryIcons[cat.iconKey] ?? Leaf;
             return (
               <Link
                 to={`/plant-care/${cat.slug}`}
                 key={cat.slug}
                 className={classNames(
-                  'group relative overflow-hidden rounded-2xl p-7 bg-gradient-to-br border border-white/10',
+                  'group relative overflow-hidden rounded-2xl p-4 sm:p-7 bg-gradient-to-br border border-white/10',
+                  index > 2 ? 'hidden sm:block' : '',
                   'hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-black/40 transition-all duration-300',
                   cat.gradient
                 )}
               >
                 <div className="relative z-10 flex flex-col h-full">
-                  <div className="w-12 h-12 rounded-lg bg-white/10 flex items-center justify-center mb-5 group-hover:bg-white/20 transition-colors">
-                    <Icon className={classNames('w-6 h-6', cat.accent)} />
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-white/10 flex items-center justify-center mb-3 sm:mb-5 group-hover:bg-white/20 transition-colors">
+                    <Icon className={classNames('w-5 h-5 sm:w-6 sm:h-6', cat.accent)} />
                   </div>
-                  <h3 className="font-serif text-2xl text-white mb-2">{cat.name}</h3>
+                  <h3 className="font-serif text-xl sm:text-2xl text-white mb-2">{cat.name}</h3>
                   <p className="text-sm text-white/80 leading-relaxed">{cat.description}</p>
 
                   {/* "Best for" subtitle — fades in on hover; always visible on touch */}
@@ -536,6 +513,16 @@ function PlantCareSection() {
               </Link>
             );
           })}
+        </div>
+
+        <div className="mt-10 text-center">
+          <Link
+            to="/plant-care"
+            className="inline-flex items-center justify-center gap-2 rounded-full border border-[#4DA583]/60 bg-[#1E6B4E]/30 px-6 py-3.5 text-sm font-semibold text-white hover:bg-[#1E6B4E] transition-colors"
+          >
+            Explore All Plant Care
+            <ArrowRight className="w-4 h-4" />
+          </Link>
         </div>
       </div>
     </section>
@@ -623,7 +610,7 @@ function InstagramGallery() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <p className="text-[#D97757] text-sm font-semibold tracking-widest uppercase mb-3">
-            Follow the Journey
+            Plantbos Gallery
           </p>
           <h2 className="font-serif text-4xl sm:text-5xl text-white">
             {siteConfig.business.instagramHandle}
@@ -640,18 +627,22 @@ function InstagramGallery() {
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
-          {instagramGallery.map((src, i) => (
+          {galleryImages.map((src, i) => (
             <a
               key={i}
               href={siteConfig.business.instagram}
               target="_blank"
               rel="noopener noreferrer"
-              className="group relative aspect-square overflow-hidden rounded-xl"
+              className={classNames(
+                'group relative aspect-square overflow-hidden rounded-xl',
+                i > 1 ? 'hidden sm:block' : ''
+              )}
             >
               <img
                 src={src}
                 alt="Plantbos on Instagram"
                 loading="lazy"
+                decoding="async"
                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
               />
               <div className="absolute inset-0 bg-[#0A3D2B]/0 group-hover:bg-[#0A3D2B]/40 transition-colors flex items-center justify-center">
@@ -659,6 +650,16 @@ function InstagramGallery() {
               </div>
             </a>
           ))}
+        </div>
+
+        <div className="mt-10 text-center">
+          <Link
+            to="/gallery"
+            className="inline-flex items-center justify-center gap-2 rounded-full bg-[#1E6B4E] px-7 py-3.5 text-sm font-semibold text-white hover:bg-[#2A8060] transition-colors shadow-lg"
+          >
+            View More
+            <ArrowRight className="w-4 h-4" />
+          </Link>
         </div>
       </div>
     </section>

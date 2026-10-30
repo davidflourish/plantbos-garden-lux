@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Leaf } from 'lucide-react';
 import { classNames } from '@/lib/utils';
 
@@ -11,8 +11,17 @@ interface ProductImageProps {
 }
 
 // Shows the product image, or an elegant botanical placeholder when no image / broken.
+function getOptimizedImageUrl(src: string): string {
+  const objectPath = '/storage/v1/object/public/product-images/';
+  const renderPath = '/storage/v1/render/image/public/product-images/';
+  const objectIndex = src.indexOf(objectPath);
+  if (objectIndex === -1 || src.includes('/storage/v1/render/image/')) return src;
+  return `${src.slice(0, objectIndex)}${renderPath}${src.slice(objectIndex + objectPath.length)}?width=900&quality=78&resize=cover`;
+}
+
 export function ProductImage({ src, alt, className, imgClassName }: ProductImageProps) {
   const [errored, setErrored] = useState(false);
+  useEffect(() => setErrored(false), [src]);
   const showPlaceholder = !src || errored;
 
   return (
@@ -29,10 +38,14 @@ export function ProductImage({ src, alt, className, imgClassName }: ProductImage
         </div>
       ) : (
         <img
-          src={src as string}
+          src={getOptimizedImageUrl(src as string)}
           alt={alt}
           loading="lazy"
-          onError={() => setErrored(true)}
+          decoding="async"
+          onError={(event) => {
+            if (event.currentTarget.src !== src) event.currentTarget.src = src as string;
+            else setErrored(true);
+          }}
           className={classNames('w-full h-full object-cover', imgClassName)}
         />
       )}

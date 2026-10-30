@@ -429,7 +429,7 @@ function ProductDetailModal({ product, onClose }: { product: Product; onClose: (
                 className="w-full inline-flex items-center justify-center gap-2 px-6 py-4 rounded-full bg-[#25D366] text-white font-semibold hover:bg-[#1ebe57] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
                 <MessageCircle className="w-5 h-5" />
-                Get our Product
+                Buy on WhatsApp
               </button>
             ) : (
               <div className="space-y-2">
@@ -448,7 +448,8 @@ function ProductDetailModal({ product, onClose }: { product: Product; onClose: (
             )}
 
             <p className="mt-3 text-xs text-[#112F23]/50 text-center leading-relaxed">
-             @officialplantbos 2024. All rights reserved.
+              Opening WhatsApp sends an inquiry only — it does not confirm payment, reserve stock,
+              or complete an order.
             </p>
           </div>
         </div>

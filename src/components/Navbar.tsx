@@ -6,8 +6,9 @@ import { siteConfig } from '@/lib/config';
 import { classNames } from '@/lib/utils';
 
 const navLinks = [
+  { label: 'Home', to: '/' },
   { label: 'Shop', to: '/shop' },
-  { label: 'Services', to: '/#services' },
+  { label: 'Service', to: '/#services' },
   { label: 'Plant Care', to: '/#plant-care' },
   { label: 'Visit', to: '/#visit' },
   { label: 'Contact', to: '/#contact' },
@@ -84,6 +85,7 @@ export function Navbar() {
               <Link
                 key={l.label}
                 to={l.to}
+                onClick={() => setOpen(false)}
                 className="px-3 py-3 text-white/90 hover:bg-white/10 rounded-lg transition-colors text-base font-medium"
               >
                 {l.label}

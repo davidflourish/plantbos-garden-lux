@@ -41,6 +41,32 @@ export function useAdminProducts() {
 
 const BUCKET = 'product-images';
 
+async function optimizeProductImage(file: File): Promise<File> {
+  const source = URL.createObjectURL(file);
+  try {
+    const image = await new Promise<HTMLImageElement>((resolve, reject) => {
+      const element = new Image();
+      element.onload = () => resolve(element);
+      element.onerror = () => reject(new Error('Image could not be read'));
+      element.src = source;
+    });
+    const maxDimension = 1600;
+    const scale = Math.min(1, maxDimension / Math.max(image.naturalWidth, image.naturalHeight));
+    const canvas = document.createElement('canvas');
+    canvas.width = Math.max(1, Math.round(image.naturalWidth * scale));
+    canvas.height = Math.max(1, Math.round(image.naturalHeight * scale));
+    const context = canvas.getContext('2d');
+    if (!context) return file;
+    context.drawImage(image, 0, 0, canvas.width, canvas.height);
+    const blob = await new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, 'image/webp', 0.82));
+    return blob ? new File([blob], `${file.name.replace(/\.[^.]+$/, '')}.webp`, { type: 'image/webp' }) : file;
+  } catch {
+    return file;
+  } finally {
+    URL.revokeObjectURL(source);
+  }
+}
+
 export async function uploadProductImage(file: File): Promise<{ url: string; error: string | null }> {
   if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
     return { url: '', error: 'Only JPEG, PNG, and WebP images are allowed.' };
@@ -48,12 +74,13 @@ export async function uploadProductImage(file: File): Promise<{ url: string; err
   if (file.size > 5 * 1024 * 1024) {
     return { url: '', error: 'Image must be 5MB or smaller.' };
   }
-  const ext = file.name.split('.').pop()?.toLowerCase() || 'jpg';
-  const path = `${Date.now()}-${Math.random().toString(36).slice(2, 9)}.${ext}`;
-  const { error: upErr } = await supabase.storage.from(BUCKET).upload(path, file, {
-    cacheControl: '3600',
+  const optimizedFile = await optimizeProductImage(file);
+  const extension = optimizedFile.type === 'image/webp' ? 'webp' : optimizedFile.type.split('/')[1] || 'jpg';
+  const path = `${Date.now()}-${Math.random().toString(36).slice(2, 9)}.${extension}`;
+  const { error: upErr } = await supabase.storage.from(BUCKET).upload(path, optimizedFile, {
+    cacheControl: '31536000',
     upsert: false,
-    contentType: file.type,
+    contentType: optimizedFile.type,
   });
   if (upErr) return { url: '', error: upErr.message };
   const { data } = supabase.storage.from(BUCKET).getPublicUrl(path);
