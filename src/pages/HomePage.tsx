@@ -89,11 +89,11 @@ const categoryIcons: Record<string, typeof Home> = {
 };
 
 const heroImages = [
-  'https://images.pexels.com/photos/11518498/pexels-photo-11518498.jpeg?auto=compress&cs=tinysrgb&h=650&w=940',
-  'https://images.pexels.com/photos/5472387/pexels-photo-5472387.jpeg?auto=compress&cs=tinysrgb&h=650&w=940',
-  'https://images.pexels.com/photos/33456527/pexels-photo-33456527.jpeg?auto=compress&cs=tinysrgb&h=650&w=940',
-  'https://images.pexels.com/photos/28787255/pexels-photo-28787255.jpeg?auto=compress&cs=tinysrgb&h=650&w=940',
-  'https://images.pexels.com/photos/2336784/pexels-photo-2336784.jpeg?auto=compress&cs=tinysrgb&h=650&w=940',
+  'https://images.pexels.com/photos/27168244/pexels-photo-27168244.jpeg?auto=compress&cs=tinysrgb&h=650&w=940',
+  'https://images.pexels.com/photos/1334146/pexels-photo-1334146.jpeg?auto=compress&cs=tinysrgb&h=650&w=940',
+  'https://images.pexels.com/photos/11119562/pexels-photo-11119562.jpeg?auto=compress&cs=tinysrgb&h=650&w=940',
+  'https://images.pexels.com/photos/32823936/pexels-photo-32823936.jpeg?auto=compress&cs=tinysrgb&h=650&w=940',
+  'https://images.pexels.com/photos/13174117/pexels-photo-13174117.jpeg?auto=compress&cs=tinysrgb&h=650&w=940',
 ];
 
 // ---------- Hero ----------
@@ -114,7 +114,7 @@ function Hero() {
         <img
           key={heroImages[activeImage]}
           src={heroImages[activeImage]}
-          alt="Lush tropical plants in a sunlit garden center"
+          alt="Dark moody tropical garden foliage"
           loading={activeImage === 0 ? 'eager' : 'lazy'}
           fetchPriority={activeImage === 0 ? 'high' : 'low'}
           decoding="async"
